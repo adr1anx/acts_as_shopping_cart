@@ -16,7 +16,7 @@ module ActiveRecord
         #
         def subtotal_for(object)
           item = item_for(object)
-          item ? item.subtotal : 0
+          item ? item.subtotal : Money.new(0)
         end
 
         #
@@ -40,7 +40,7 @@ module ActiveRecord
         #
         def price_for(object)
           item = item_for(object)
-          item ? item.price : 0
+          item ? Money.new(item.price) : Money.new(0)
         end
 
         #

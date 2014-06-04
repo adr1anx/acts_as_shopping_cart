@@ -16,7 +16,7 @@ describe ActiveRecord::Acts::ShoppingCart::Item do
   end
 
   let(:object) { stub(:id => 1) }
-  let(:item)   { stub(:subtotal => 47.98, :price => 23.99, :quantity => 2, :save => true)}
+  let(:item)   { stub(:subtotal => Money.new(4798), :price => Money.new(2399), :quantity => 2, :save => true)}
 
   describe :item_for do
     context "no cart item exists for the object" do
@@ -47,7 +47,7 @@ describe ActiveRecord::Acts::ShoppingCart::Item do
       end
 
       it "returns 0" do
-        subject.subtotal_for(object).should eq(0.0)
+        subject.subtotal_for(object).should eq(Money.new(0))
       end
     end
 
@@ -57,7 +57,7 @@ describe ActiveRecord::Acts::ShoppingCart::Item do
       end
 
       it "returns the subtotal for the item" do
-        subject.subtotal_for(object).should eq(47.98)
+        subject.subtotal_for(object).should eq(Money.new(4798))
       end
     end
   end
@@ -104,7 +104,7 @@ describe ActiveRecord::Acts::ShoppingCart::Item do
       end
 
       it "returns 0" do
-        subject.price_for(object).should eq(0.0)
+        subject.price_for(object).should eq(Money.new(0))
       end
     end
 
@@ -114,7 +114,7 @@ describe ActiveRecord::Acts::ShoppingCart::Item do
       end
 
       it "returns the price of the item" do
-        subject.price_for(object).should eq(23.99)
+        subject.price_for(object).should eq(Money.new(2399))
       end
     end
   end
@@ -126,8 +126,8 @@ describe ActiveRecord::Acts::ShoppingCart::Item do
       end
 
       it "updates the price on the item" do
-        item.should_receive(:update_price).with(99.99)
-        subject.update_price_for(object, 99.99)
+        item.should_receive(:update_price).with(9999)
+        subject.update_price_for(object, 9999)
       end
     end
   end

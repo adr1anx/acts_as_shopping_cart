@@ -26,8 +26,8 @@ describe ActiveRecord::Acts::ShoppingCart::Collection do
       end
 
       it "creates a new shopping cart item" do
-        subject.shopping_cart_items.should_receive(:create).with(:item => object, :price => 19.99, :quantity => 3)
-        subject.add(object, 19.99, 3)
+        subject.shopping_cart_items.should_receive(:create).with(:item => object, :price => 1999, :quantity => 3)
+        subject.add(object, 1999, 3)
       end
     end
 
@@ -37,8 +37,8 @@ describe ActiveRecord::Acts::ShoppingCart::Collection do
       end
 
       it "creates a new shopping cart item non-cumulatively" do
-        subject.shopping_cart_items.should_receive(:create).with(:item => object, :price => 19.99, :quantity => 3)
-        subject.add(object, 19.99, 3, false)
+        subject.shopping_cart_items.should_receive(:create).with(:item => object, :price => 1999, :quantity => 3)
+        subject.add(object, 1999, 3, false)
       end
     end
 
@@ -49,7 +49,7 @@ describe ActiveRecord::Acts::ShoppingCart::Collection do
 
       it "updates the quantity for the item" do
         shopping_cart_item.should_receive(:quantity=).with(5)
-        subject.add(object, 19.99, 3)
+        subject.add(object, 1999, 3)
       end
     end
 
@@ -133,25 +133,25 @@ describe ActiveRecord::Acts::ShoppingCart::Collection do
       end
 
       it "returns 0" do
-        subject.subtotal.should eq(0)
+        subject.subtotal.should eq(Money.new(0))
       end
     end
 
     context "cart has items" do
       before do
-        items = [stub(:quantity => 2, :price => 33.99), stub(:quantity => 1, :price => 45.99)]
+        items = [stub(:quantity => 2, :price => 3399), stub(:quantity => 1, :price => 4599)]
         subject.stub(:shopping_cart_items).and_return(items)
       end
 
       it "returns the sum of the price * quantity for all items" do
-        subject.subtotal.should eq(113.97)
+        subject.subtotal.should eq(Money.new(11397))
       end
     end
   end
 
   describe :shipping_cost do
     it "returns 0" do
-      subject.shipping_cost.should eq(0)
+      subject.shipping_cost.should eq(Money.new(0))
     end
   end
 
@@ -175,13 +175,13 @@ describe ActiveRecord::Acts::ShoppingCart::Collection do
 
   describe :total do
     before do
-      subject.stub(:subtotal).and_return(10.99)
-      subject.stub(:taxes).and_return(13.99)
-      subject.stub(:shipping_cost).and_return(12.99)
+      subject.stub(:subtotal).and_return(1099)
+      subject.stub(:taxes).and_return(1399)
+      subject.stub(:shipping_cost).and_return(1299)
     end
 
     it "returns subtotal + taxes + shipping_cost" do
-      subject.total.should eq(37.97)
+      subject.total.should eq(Money.new(3797))
     end
   end
 
@@ -194,7 +194,7 @@ describe ActiveRecord::Acts::ShoppingCart::Collection do
 
     context "cart has some items" do
       before do
-        items = [stub(:quantity => 2, :price => 33.99), stub(:quantity => 1, :price => 45.99)]
+        items = [stub(:quantity => 2, :price => 3399), stub(:quantity => 1, :price => 4599)]
         subject.stub(:shopping_cart_items).and_return(items)
       end
 

@@ -2,6 +2,7 @@ require 'acts_as_shopping_cart/version'
 require 'active_record/acts/shopping_cart'
 require 'active_record/acts/shopping_cart_item'
 require 'acts_as_shopping_cart/schema'
+require 'money'
 
 module ActiveRecord
   module Acts
